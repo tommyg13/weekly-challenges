@@ -1,0 +1,12 @@
+{
+  "name": "ccwc_tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ccwc.js",
+  "scripts": {
+  },
+  "type":"module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
