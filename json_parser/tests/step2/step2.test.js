@@ -1,26 +1,40 @@
 import { readFileSync } from "fs";
-import { isValidJSON, tokenizeJSON } from "../../index.js";
+import { lexer, parser } from "../..";
 
-test("valid json", () => {
-  const jsonFile = readFileSync("tests/step2/valid.json", "utf8");
-  const tokens = tokenizeJSON(jsonFile);
-  expect(isValidJSON(tokens)).toBe(true);
-});
+describe("Step 2 Tests", () => {
+  test("Valid JSON", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
 
-test("valid2 json", () => {
-  const jsonFile = readFileSync("tests/step2/valid2.json", "utf8");
-  const tokens = tokenizeJSON(jsonFile);
-  expect(isValidJSON(tokens)).toBe(true);
-});
+    const input = readFileSync("./tests/step2/valid.json", "utf8");
+    const tokens = lexer(input);
+    parser(tokens);
 
-test("invalid json", () => {
-  const jsonFile = readFileSync("tests/step2/invalid.json", "utf8");
-  const tokens = tokenizeJSON(jsonFile);
-  expect(isValidJSON(tokens)).toBe(false);
-});
+    expect(mockExit).toHaveBeenCalledWith(0);
 
-test("invalid2 json", () => {
-  const jsonFile = readFileSync("tests/step2/invalid2.json", "utf8");
-  const tokens = tokenizeJSON(jsonFile);
-  expect(isValidJSON(tokens)).toBe(false);
+    mockExit.mockRestore();
+  });
+
+  test("Valid 2 JSON", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
+    const input = readFileSync("./tests/step2/valid2.json", "utf8");
+    const tokens = lexer(input);
+    parser(tokens);
+
+    expect(mockExit).toHaveBeenCalledWith(0);
+
+    mockExit.mockRestore();
+  });
+
+  test("Invalid JSON", () => {
+    const input = readFileSync("./tests/step2/invalid.json", "utf8");
+    const tokens = lexer(input);
+    expect(() => parser(tokens)).toThrow();
+  });
+
+  test("Invalid 2 JSON", () => {
+    const input = readFileSync("./tests/step2/invalid.json", "utf8");
+    const tokens = lexer(input);
+    expect(() => parser(tokens)).toThrow();
+  });
 });
